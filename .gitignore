@@ -1,0 +1,7 @@
+.review/
+__pycache__/
+*.pyc
+node_modules/
+.env
+.env.*
+.impeccable/

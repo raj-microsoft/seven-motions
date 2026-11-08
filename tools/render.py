@@ -42,8 +42,11 @@ def render(k):
   # Seek purity: no dependence on previous calls.
   a=page.evaluate('()=>{seek(3);return document.querySelector("canvas").toDataURL()}');page.evaluate('seek(1)');bb=page.evaluate('()=>{seek(3);return document.querySelector("canvas").toDataURL()}');assert a==bb,(name,'nondeterministic');b.close()
  subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(tmp/'silent.mp4'),'-i',str(tmp/'audio.wav'),'-c:v','copy','-af','loudnorm=I=-14:TP=-1:LRA=11','-c:a','aac','-b:a','128k','-movflags','+faststart','-shortest',str(folder/'film.mp4')],check=True)
- sheet=Image.new('RGB',(1080,480))
- for j in range(4):sheet.paste(Image.open(tmp/f'beat-{j}.png').resize((270,480)),(j*270,0))
+ beat_times=[[.4,1.8,3.3,4.8,7.4],[.4,1.8,3.2,4.5,5.8,7.4],[.4,2,3.7,4.8,6.3,7.5],[.4,1.5,2.1,3.2,4.4,5.8,7.4],[.7,2.2,3.7,5.3,6.8,8.2],[.7,2.5,3.9,5.3,7.4],[.5,2.5,4,5.8,7.5,8.7]][k]
+ sheet=Image.new('RGB',(180*len(beat_times),320))
+ for j,t in enumerate(beat_times):
+  subprocess.run(['ffmpeg','-loglevel','error','-y','-ss',str(t),'-i',str(folder/'film.mp4'),'-frames:v','1',str(tmp/f'scene-{j}.jpg')],check=True)
+  sheet.paste(Image.open(tmp/f'scene-{j}.jpg').resize((180,320)),(j*180,0))
  sheet.save(folder/'contact-sheet.jpg',quality=90)
  Image.open(folder/'poster.png').convert('RGB').save(folder/'poster.jpg',quality=88);(folder/'poster.png').unlink()
  size=(folder/'film.mp4').stat().st_size;assert size<8*1024*1024,(name,size);print(name,'rendered',round(size/1024/1024,2),'MB; deterministic seek verified',flush=True)

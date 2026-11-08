@@ -9,7 +9,7 @@ Method credit: **Janus Tiu — Claude Opus 5.5 Motion Videos Tutorial**, [origin
 ## What's here
 - Seven self-contained Canvas HTML films, `films/<style>/index.html`. Each exposes `seek(t)` after `window.ready`.
 - Seven 1080×1920, 30 fps H.264/AAC MP4s, eight or nine seconds each, below 8 MB each.
-- Original poster images and post-render four-key contact sheets.
+- Original poster images and post-render per-beat contact sheets.
 - A responsive gallery with offscreen pause, reduced-motion posters, playback/scrubbing and opt-in sound.
 - Original synthesized music and effects, loudness-normalized toward −14 LUFS.
 
@@ -21,6 +21,7 @@ Requirements: Python 3.12+, `pip install pillow playwright`, ffmpeg/ffprobe, ins
 ```
 python tools/build.py
 python tools/render.py
+python tools/normalize.py
 python tools/verify.py
 ```
 
